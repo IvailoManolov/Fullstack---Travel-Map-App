@@ -5,11 +5,13 @@ const PinSchema = new mongoose.Schema({
         type : String,
         require : true
     },
+
     title : {
         type : String,
         require : true,
         min : 3
     },
+
     rating : {
         type : Number,
         require : true,
@@ -21,9 +23,15 @@ const PinSchema = new mongoose.Schema({
         type : Number,
         require : true,
     },
+
     lon : {
         type : Number,
         require : true
+    },
+
+    descr : {
+        type:String,
+        require:true
     }
 },{timestamps : true})
 
