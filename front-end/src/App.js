@@ -6,6 +6,8 @@ import {useState} from "react"
 import StarIcon from '@mui/icons-material/Star';
 import axios from "axios"
 import {format} from "timeago.js"
+import  {NavigationControl} from 'react-map-gl';
+import {useMap} from 'react-map-gl';
 
 import "./App.css"
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -13,15 +15,20 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 function App() {
 
   const [pins,setPins] = useState([])
+  
+  const currentUser = 'darkWeb'
+
+  const[newPlace,setNewPlace] = useState(null)
+
+  const[lookTo,setLookTo] = useState(false)
 
   const [viewPort,setViewPort] = useState({
-    longitude: -122.4,
+    longitude: 12.4,
     latitude: 37.8,
     zoom: 14
   })
 
   const[currentPlaceId, setCurrentPlaceId] = useState(null)
-
 
   React.useEffect(() => {
     const getPins = async () => {
@@ -37,32 +44,43 @@ function App() {
     getPins()
   },[])
 
-
-  const handleMarkerClicked = (id) => {
+  const handleMarkerClicked = (id,lat,lon) => {
     setCurrentPlaceId(id)
-    console.log("Added a marker")
+  }
+
+  const handleAddClick = (e) => {
+    let lat = e.lngLat.lat
+    let long = e.lngLat.lng
+    setNewPlace({
+      lat : lat,
+      lng : long,
+    })
   }
 
   return (
     <div className='app'>
-    <Map
+    <Map 
       container ={'map'}
       projection={'globe'}
       initialViewState={{viewPort}}
       mapboxAccessToken={process.env.REACT_APP_MAPBOX}
       style={{width: "100vw", height: "100vh"}}
-      mapStyle="mapbox://styles/ivomoreras/claf55gfo005114qwe1aed26r">
+      mapStyle="mapbox://styles/ivomoreras/claf55gfo005114qwe1aed26r"
+      onDblClick = {handleAddClick}
+      >
+        <NavigationControl />
       {pins.map(p => (
         <>
-          <Marker longitude={p.lon} latitude={p.lat}  anchor="center">
+          <Marker longitude={p.lon} latitude={p.lat}
+            anchor="center">
             <FmdGoodIcon 
             className = 'icon'
-            onClick = {() => handleMarkerClicked(p._id)}
-            style ={{fontSize : viewPort.zoom * 2, color:"slateblue"}}
+            onClick = {() => handleMarkerClicked(p._id,p.lat,p.lon)}
+            style ={{fontSize : viewPort.zoom * 2, color: p.userName === currentUser ? "tomato" : "slateblue"}}
             />
           </Marker>
 
-          { p._id === currentPlaceId && 
+          {p._id === currentPlaceId && 
           (
             <Popup longitude={p.lon} latitude={p.lat}
             closeOnClick = {false}
@@ -93,6 +111,34 @@ function App() {
           }
       </>
       ))}
+      {newPlace && 
+      <Popup longitude={newPlace.lng}
+            latitude={newPlace.lat}
+            closeOnClick = {false}
+            closeOnMove = {false}
+            onClose={() => setNewPlace(null)}
+             anchor="left">
+
+              <div>
+                <form>
+                  <label>Title</label>
+                  <input placeholder='Enter a title...'/>
+                  <label>Review</label>
+                  <textarea placeholder='Say something about this place...' />
+                  <label>Rating</label>
+                  <select>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                  <button className='submitButton' type = "submit">Add Pin</button>
+                </form>
+              </div>
+
+        </Popup>
+      }
       </Map>
     </div>
   );
