@@ -41,3 +41,36 @@ label {
     justify-content: space-between;
     color: gray;
 }
+
+form{
+    width: 250px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+}
+
+input,textarea{
+    border: none;
+    border-bottom: 1px solid gray;
+    outline: none;
+}
+
+input::placeholder,textarea::placeholder{
+    font-size: 12px;
+    color: lightgray;
+}
+
+.submitButton{
+    border: none;
+    padding: 5px;
+    border-radius:10px;
+    color: white;
+    background-color: rgb(253, 123, 100);
+}
+
+.submitButton:hover{
+    background-color: tomato;
+    cursor: pointer;
+}

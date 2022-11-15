@@ -1,0 +1,16 @@
+.footer{
+    position: absolute;
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    height: auto;
+    width: 100vw;
+    background-color: rgb(16, 29, 49);
+    z-index: 100;
+    bottom: 0;
+}
+
+.footer:hover{
+    cursor: pointer;
+    box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.3) -6px -2px 16px 0px;
+}

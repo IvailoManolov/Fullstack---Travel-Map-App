@@ -7,10 +7,20 @@ import StarIcon from '@mui/icons-material/Star';
 import axios from "axios"
 import {format} from "timeago.js"
 import  {NavigationControl} from 'react-map-gl';
-import {useMap} from 'react-map-gl';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import "./App.css"
 import 'mapbox-gl/dist/mapbox-gl.css'
+import Footer from './Components/Footer';
+
+const pinAddSuccess = () => {
+  toast.success("Added pin!")
+}
+
+const pinAddFailure = () => {
+  toast.error("Couldn't add pin")
+}
 
 function App() {
 
@@ -19,6 +29,10 @@ function App() {
   const currentUser = 'darkWeb'
 
   const[newPlace,setNewPlace] = useState(null)
+
+  const[title,setTitle] = useState(null)
+  const[descr,setDescr] = useState(null)
+  const[rating,setRating] = useState(0)
 
   const[lookTo,setLookTo] = useState(false)
 
@@ -55,6 +69,29 @@ function App() {
       lat : lat,
       lng : long,
     })
+  }
+
+  const handlePinSubmit = async (e) => {
+    e.preventDefault()
+
+    const newPin = {
+      userName : currentUser,
+      title : title,
+      descr : descr,
+      rating : rating,
+      lat : newPlace.lat,
+      lon : newPlace.lng
+    }
+
+    try {
+      const responce = await axios.post("/pins",newPin)
+      setPins([...pins,responce.data])
+      setNewPlace(null)
+      pinAddSuccess()
+    } catch(err){
+      console.log(err)
+      pinAddFailure()
+    }
   }
 
   return (
@@ -94,11 +131,7 @@ function App() {
               <p className='descr'>{p.descr}</p>
               <label>Rating</label>
               <div className='stars'>
-                <StarIcon className='star'/>
-                <StarIcon className='star'/>
-                <StarIcon className='star'/>
-                <StarIcon className='star'/>
-                <StarIcon className='star'/>
+                {Array(p.rating).fill(<StarIcon className='star'/>)}
               </div>
               <label>Information</label>
               <div className='info'>
@@ -120,18 +153,22 @@ function App() {
              anchor="left">
 
               <div>
-                <form>
+                <form onSubmit={handlePinSubmit}> 
                   <label>Title</label>
-                  <input placeholder='Enter a title...'/>
+                  <input placeholder='Enter a title...'
+                  onChange={(e) => setTitle(e.target.value)}
+                  />
                   <label>Review</label>
-                  <textarea placeholder='Say something about this place...' />
+                  <textarea placeholder='Say something about this place...'
+                  onChange={(e) => setDescr(e.target.value)}
+                   />
                   <label>Rating</label>
-                  <select>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                  <select onChange={(e) => setRating(e.target.value)}>
+                    <option value="1">1 </option>
+                    <option value="2">2 </option>
+                    <option value="3">3 </option>
+                    <option value="4">4 </option>
+                    <option value="5">5 </option>
                   </select>
                   <button className='submitButton' type = "submit">Add Pin</button>
                 </form>
@@ -140,6 +177,14 @@ function App() {
         </Popup>
       }
       </Map>
+
+      <Footer/>
+
+      <ToastContainer
+      position='top-left'
+      theme='dark'
+       />
+
     </div>
   );
 }
