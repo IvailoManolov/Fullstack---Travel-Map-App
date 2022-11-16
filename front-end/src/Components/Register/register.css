@@ -1,0 +1,51 @@
+.register_container{
+    display: flex;
+    width: 300px;
+    height: 250px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: whitesmoke;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.logo{
+    color: blue;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.register_btn{
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: lightgray;
+    font-weight: 1000;
+}
+
+.register_btn:hover{
+    background-color: rgb(225, 225, 225);
+}
+
+input{
+    padding: 2px;
+    outline: none;
+    background-color: whitesmoke;
+    color: rgb(50, 50, 185);
+}
+.register_cancel{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
