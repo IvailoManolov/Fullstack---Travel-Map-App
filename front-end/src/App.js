@@ -18,6 +18,13 @@ const pinAddSuccess = () => {
   toast.success("Added pin!")
 }
 
+const userNotLoggedIn = () => {
+  toast.warning("Login to account to set pins!")
+}
+const userLoggedOut = (userS) => {
+  toast.warning("Logout from " + userS)
+}
+
 const pinAddFailure = () => {
   toast.error("Couldn't add pin. Please fill all data")
 }
@@ -83,18 +90,31 @@ function App() {
     }
 
     try {
-      const responce = await axios.post("/pins",newPin)
-      setPins([...pins,responce.data])
-      setNewPlace(null)
-      pinAddSuccess()
-      setRating(1)
-      setDescr(null)
-      setTitle(null)
+      if(!currentUser)
+      {
+        userNotLoggedIn()
+      }
+      else{
+        const responce = await axios.post("/pins",newPin)
+        setPins([...pins,responce.data])
+        setNewPlace(null)
+        pinAddSuccess()
+        setRating(1)
+        setDescr(null)
+        setTitle(null)
+      }
+      
 
     } catch(err){
       console.log(err)
       pinAddFailure()
     }
+  }
+
+  const handleLogout = () => {
+    myStorage.removeItem("user")
+    userLoggedOut(currentUser)
+    setCurrentUser(null)
   }
 
   const[showRegister,setShowRegister] = useState(false)
@@ -190,7 +210,7 @@ function App() {
 
       <div className='footer'>
             <div className='footer_down'>
-                {currentUser ? (<button className='button logout'>Log out</button>
+                {currentUser ? (<button className='button logout' onClick={handleLogout}>Log out</button>
                 ) : 
                 (<div className='buttons'>
                     <button className='button login' onClick={() => {setShowLogin(true)}}>Login</button>
