@@ -56,7 +56,7 @@ router.post("/login",async (req,res) => {
             {
                 //send res
                 console.log('\x1b[42m%s\x1b[0m',"[SUCCESS]Loging in with user")
-                res.status(200).json("pedal")
+                res.status(200).json(user)
             }
         }
     }

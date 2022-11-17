@@ -9,32 +9,31 @@ import {format} from "timeago.js"
 import  {NavigationControl} from 'react-map-gl';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import "./App.css"
 import 'mapbox-gl/dist/mapbox-gl.css'
-import Footer from './Components/Footer';
+import Register from './Components/Register/Register';
+import Login from './Components/Login/Login';
 
 const pinAddSuccess = () => {
   toast.success("Added pin!")
 }
 
 const pinAddFailure = () => {
-  toast.error("Couldn't add pin")
+  toast.error("Couldn't add pin. Please fill all data")
 }
 
 function App() {
 
-  const [pins,setPins] = useState([])
-  
-  const currentUser = 'darkWeb'
+  const myStorage = window.localStorage
 
+  const [pins,setPins] = useState([])
   const[newPlace,setNewPlace] = useState(null)
 
   const[title,setTitle] = useState(null)
   const[descr,setDescr] = useState(null)
-  const[rating,setRating] = useState(0)
+  const[rating,setRating] = useState(1)
 
-  const[lookTo,setLookTo] = useState(false)
+  const[currentUser,setCurrentUser] = useState(null)
 
   const [viewPort,setViewPort] = useState({
     longitude: 12.4,
@@ -88,11 +87,18 @@ function App() {
       setPins([...pins,responce.data])
       setNewPlace(null)
       pinAddSuccess()
+      setRating(1)
+      setDescr(null)
+      setTitle(null)
+
     } catch(err){
       console.log(err)
       pinAddFailure()
     }
   }
+
+  const[showRegister,setShowRegister] = useState(false)
+  const[showLogin,setShowLogin] = useState(false)
 
   return (
     <div className='app'>
@@ -105,6 +111,10 @@ function App() {
       mapStyle="mapbox://styles/ivomoreras/claf55gfo005114qwe1aed26r"
       onDblClick = {handleAddClick}
       >
+      <ToastContainer
+      position='top-left'
+      theme='dark'
+       />
         <NavigationControl />
       {pins.map(p => (
         <>
@@ -164,11 +174,11 @@ function App() {
                    />
                   <label>Rating</label>
                   <select onChange={(e) => setRating(e.target.value)}>
-                    <option value="1">1 </option>
-                    <option value="2">2 </option>
-                    <option value="3">3 </option>
-                    <option value="4">4 </option>
-                    <option value="5">5 </option>
+                    <option value= "1">1 </option>
+                    <option value= "2">2 </option>
+                    <option value= "3">3 </option>
+                    <option value= "4">4 </option>
+                    <option value= "5">5 </option>
                   </select>
                   <button className='submitButton' type = "submit">Add Pin</button>
                 </form>
@@ -178,12 +188,20 @@ function App() {
       }
       </Map>
 
-      <Footer/>
+      <div className='footer'>
+            <div className='footer_down'>
+                {currentUser ? (<button className='button logout'>Log out</button>
+                ) : 
+                (<div className='buttons'>
+                    <button className='button login' onClick={() => {setShowLogin(true)}}>Login</button>
+                    <button className='button register' onClick={() => setShowRegister(true)}>Register</button>
+                </div>
+                )}
+            </div>
+        </div>
 
-      <ToastContainer
-      position='top-left'
-      theme='dark'
-       />
+        {showRegister && <Register setShowRegister={setShowRegister}/>}
+        {showLogin && <Login setShowLogin={setShowLogin} myStorage={myStorage} setCurrentUser = {setCurrentUser}/>}
 
     </div>
   );

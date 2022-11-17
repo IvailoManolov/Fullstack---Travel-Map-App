@@ -1,0 +1,51 @@
+.login_container{
+    display: flex;
+    width: 280px;
+    height: 200px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: whitesmoke;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.logo{
+    color: slateblue;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.login_btn{
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: slateblue;
+    font-weight: 1000;
+}
+
+.login_btn:hover{
+    background-color: rgb(118, 104, 206);
+}
+
+input{
+    padding: 2px;
+    outline: none;
+    background-color: whitesmoke;
+    color: rgb(50, 50, 185);
+}
+.login_cancel{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}

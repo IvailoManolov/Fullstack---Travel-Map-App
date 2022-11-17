@@ -74,3 +74,54 @@ input::placeholder,textarea::placeholder{
     background-color: tomato;
     cursor: pointer;
 }
+
+.footer{
+    position: absolute;
+    display: flex;
+    padding: 10px;
+    flex-direction: row;
+    height: auto;
+    width: 100vw;
+    background-color: rgb(16, 29, 49);
+    z-index: 100;
+    bottom: 0;
+    justify-content: center;
+}
+
+.footer:hover {
+    cursor: pointer;
+    box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.1) -6px -2px 16px 0px;
+}
+
+.button{
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.logout{
+    background-color: tomato;
+}
+.login{
+    background-color: teal;
+}
+
+.register{
+    background-color: blue;
+}
+
+.register:hover{
+    background-color: darkblue;
+}
+
+.login:hover{
+    background-color: rgb(0, 76, 76);
+}
+.logout:hover{
+    background-color: rgb(255, 68, 35);
+}
+
+
